@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="example1"></div>
+    <div id="example2"></div>
+<script type="text/javascript" src="../../js/react.development.js"></script>
+<script type="text/javascript" src="../../js/babel.min.js"></script>
+    <script type="text/javascript" src="../../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../../js/prop-types.js"></script>
+
+    <script type="text/babel">
+        class Mycomponent extends React.Component{
+            constructor(props){
+                super(props)
+                this.showInput=this.showInput.bind(this)
+                this.handleBlur=this.handleBlur.bind(this)
+            }
+            showInput(){
+                //const {input}=this.refs
+                //alert(this.input.value)
+            }
+            handleBlur(event){
+                const input=event.target.value;
+                alert(input)
+            }
+            render() {
+                return (
+                    <div>
+                        <input type="text"ref={(input)=>this.input=input}/>
+                        <button onClick={this.showInput}>提示输入</button>
+                        <input type="text"placeholder="失去焦点提示内容" onBlur={this.handleBlur}/>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<Mycomponent />,document.getElementById('example1'))
+
+    </script>
+</body>
+</html>

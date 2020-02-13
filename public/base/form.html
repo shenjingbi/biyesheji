@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="example1"></div>
+    <div id="example2"></div>
+<script type="text/javascript" src="../../js/react.development.js"></script>
+<script type="text/javascript" src="../../js/babel.min.js"></script>
+    <script type="text/javascript" src="../../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../../js/prop-types.js"></script>
+
+
+    <script type="text/babel">
+       class LoginForm extends React.Component{
+           constructor(props){
+               super(props)
+               this.handleSubmit=this.handleSubmit.bind(this)
+               this.handleChange=this.handleChange.bind(this)
+               this.state={
+                   pwd:''
+               }
+           }
+           handleSubmit(event){
+               const name=this.nameinput.value
+                alert(`${name},${this.state.pwd}`)
+               event.preventDefault()
+           }
+           handleChange(event){
+               const pwd=event.target.value
+               this.setState({pwd})
+           }
+           render() {
+               const {todos}=this.state
+               return (
+                   <form action="/example1" onSubmit={this.handleSubmit}>
+                      用户名：<input type='text'ref={input=>this.nameinput=input}/>
+                      密码：<input type='password' value={this.state.pwd} onChange={this.handleChange}/>
+                       <input type='submit' value="登录"/>
+                   </form>
+               )
+           }
+       }
+
+        ReactDOM.render(<LoginForm/>,document.getElementById('example1'))
+
+    </script>
+</body>
+</html>

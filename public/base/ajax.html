@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="example1"></div>
+<div id="example2"></div>
+<script type="text/javascript" src="../../js/react.development.js"></script>
+<script type="text/javascript" src="../../js/babel.min.js"></script>
+<script type="text/javascript" src="../../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../../js/prop-types.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/axios/0.17.1/axios.js"></script>
+
+<script type="text/babel">
+    class MostStarRepo extends React.Component {
+        state={
+            reponame:'',
+            repourl:''
+        }
+        componentDidMount() {
+            //使用axios发送异步ajax请求
+            const url=`http://api.github.com/search2/repositories?q=r&sort=stars`
+            axios.get(url)
+                .then(response=>{
+                    const result=response.data
+                    console.log(response)
+                    const {name,html_url}=result.items[0]
+                    this.setState({reponame:name,repourl:html_url})
+                })
+                .catch((error)=>{
+                    alert (error.message)
+                })
+            /*fetch(url)
+                .then(response=>{
+                    return response.json()
+                })
+                .then(data=>{
+                    const {name,html_url}=data.items[0]
+                    this.setState({reponame:name,repourl:html_url})
+                })*/
+
+        }
+
+        render() {
+            const {reponame,repourl}=this.state
+            if(!reponame){
+                return <h2>LOADING...</h2>
+            }else{
+                return <h2>Most star repo is <a href={repourl}>{reponame}</a></h2>
+            }
+             ({
+
+            })
+        }
+    }
+
+    ReactDOM.render(<MostStarRepo/>,document.getElementById('example1'))
+
+</script>
+</body>
+</html>
