@@ -5,6 +5,7 @@ import {Menu,Icon} from "antd";
 import './left-nav.less'
 import logo from '../../assets/image/tubiao.jpg'
 import menuList from "../../config/menuConfig";
+import memoryUtils from "../../utils/memoryUtils";
 
 const SubMenu=Menu.SubMenu
 
@@ -12,15 +13,33 @@ const SubMenu=Menu.SubMenu
 左侧导航的组件
 * */
 class LeftNav extends Component{
+
+    //判断当前登录用户对item是否有权限
+    hasAuth = (item) =>{
+        const {key,isPublic}=item  //menuList列表中的key
+        const menus1=memoryUtils.user.menus
+        const menus=menus1.split(",")
+        const username=memoryUtils.user.username
+        //menus.indexOf(key)找key在数组中的下标，找不到就是-1
+        /*1.如果当前用户是admin
+        2.当前用户有此item的权限：key有没有在menus中
+        3.如果当前item是公开的*/
+        if(username==='admin'||isPublic||menus.indexOf(key)!==-1){
+            return true
+        }else if(item.children){//4.当前用户有此item的某个子item的权限
+            return !!item.children.find(child=>{ console.log(child) ;return menus.indexOf(child.key)!==-1}) //!!：强制转换成bool值
+        }
+        return false
+
+    }
+
    /* 根据menu的数据数组生成对应的标签数组
     使用map()+递归调用*/
     getMenuNodes_map=(menuList)=>{
         return menuList.map(item=>{
-            /*
-            两种可能
-            1.Menu.Item（无子路由）
-            2.Submenu(有子路由)
-            * */
+
+        //如果当前用户有item对应的权限，才需要显示对应的菜单项
+        if(this.hasAuth(item)){
             if(!item.children){
                 return (
                     <Menu.Item key={item.key}>
@@ -36,16 +55,22 @@ class LeftNav extends Component{
                         key={item.key}
                         title={
                             <span>
-                                <Icon type={item.icon} />
-                                <span>{item.title}</span>
-                             </span>
+                            <Icon type={item.icon} />
+                            <span>{item.title}</span>
+                         </span>
                         }
                     >
                         {this.getMenuNodes(item.children)}
                     </SubMenu>
-
                 )
             }
+        }
+        /*
+        两种可能
+        1.Menu.Item（无子路由）
+        2.Submenu(有子路由)
+        * */
+
         })
     }
 
@@ -57,38 +82,40 @@ class LeftNav extends Component{
         return menuList.reduce((pre,item)=>{
            /* 向pre中添加 1.Menu.Item（无子路由）
                          2.Submenu(有子路由)*/
-            if(!item.children){
-                pre.push((
-                    <Menu.Item key={item.key}>
-                        <Link to={item.key}>
-                            <Icon type={item.icon} />
-                            <span>{item.title}</span>
-                        </Link>
-                    </Menu.Item>
-                ))
-            }
-            else {
-                //查找一个与当前请求路径匹配的子Item
-                 const cItem=item.children.find(cItem=>cItem.key===path)
-                //若存在，说明当前item的子列表需要打开
-                if(cItem){
-                    this.openKey=item.key
-                }
+           if(this.hasAuth(item)){
+               if(!item.children){
+                   pre.push((
+                       <Menu.Item key={item.key}>
+                           <Link to={item.key}>
+                               <Icon type={item.icon} />
+                               <span>{item.title}</span>
+                           </Link>
+                       </Menu.Item>
+                   ))
+               }
+               else {
+                   //查找一个与当前请求路径匹配的子Item
+                   const cItem=item.children.find(cItem=>cItem.key===path)
+                   //若存在，说明当前item的子列表需要打开
+                   if(cItem){
+                       this.openKey=item.key
+                   }
 
-                pre.push((
-                    <SubMenu
-                        key={item.key}
-                        title={
-                            <span>
+                   pre.push((
+                       <SubMenu
+                           key={item.key}
+                           title={
+                               <span>
                                 <Icon type={item.icon} />
                                 <span>{item.title}</span>
                              </span>
-                        }
-                    >
-                        {this.getMenuNodes(item.children)}
-                    </SubMenu>
-                ))
-            }
+                           }
+                       >
+                           {this.getMenuNodes(item.children)}
+                       </SubMenu>
+                   ))
+               }
+           }
             return pre
         },[])
     }
@@ -103,7 +130,6 @@ class LeftNav extends Component{
         const path=this.props.location.pathname
         //得到需要打开菜单项的key
         const openKey=this.openKey
-
         return (
             <div className='left-nav'>
                 <Link to='/' className='left-nav-header'>

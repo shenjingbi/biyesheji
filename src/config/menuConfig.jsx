@@ -3,7 +3,7 @@ const menuList=[
         title:'首页',
         key:'/home',
         icon:'home',
-        isPublic:true
+        isPublic:true //公开的
     },
     {
         title:'用户',
@@ -11,7 +11,7 @@ const menuList=[
         icon:'user',
         children:[
             {
-                title:'个人信息',
+                title:'用户管理',
                 key:'/user',
                 icon:'user',
             },
@@ -20,10 +20,23 @@ const menuList=[
                 key:'/category',
                 icon:'safety',
             },
+
+        ]
+    },
+    {
+        title:'管理员',
+        key:'/managers',
+        icon:'team',
+        children:[
+            {
+                title:'管理员信息',
+                key:'/manager',
+                icon:'windows',
+            },
             {
                 title:'角色管理',
                 key:'/role',
-                icon:'windows',
+                icon:'bank',
             },
         ]
     },

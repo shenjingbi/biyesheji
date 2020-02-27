@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import {Button,Form,Icon,Input,message} from "antd";
-import {Redirect} from 'react-router-dom'
+//import {Redirect} from 'react-router-dom'
 
 import "./registers.less"
 import logo from '../../assets/image/tubiao.jpg'

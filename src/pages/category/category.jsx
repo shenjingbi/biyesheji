@@ -1,9 +1,10 @@
 import React,{Component} from 'react'
 import {Card, Button, Table, Icon, message,Modal} from "antd";
 import LinkButton from "../../component/link-button/button";
-import {reqCategory, reqUpdateCategory} from "../../api";
+import {reqAddCategory, reqCategory, reqDeleteCategory, reqUpdateCategory} from "../../api";
 import AddForm from "./add-form";
 import UpdateForm from "./update-form"
+
 /*
 职业管理
 * */
@@ -12,9 +13,10 @@ export  default class Category extends Component{
         loading:false,//是否正在获取数据中
         categorys:[], //一级分类列表
         subCategorys:[],//二级分类列表
+        category2:[],//当前选中的分类
         parentId:'0',//当前需要显示的分类列表的父分类Id
         parentName:'',//当前需要显示的分类列表的父分类Name
-        showStatus:0, //表示添加/更新的确认框是否显示，0：都不显示，1：显示添加，显示更新
+        showStatus:0, //表示添加/更新的确认框是否显示，0：都不显示，1：显示添加，2显示更新 ，3删除
     }
     //初始化table的所有列数组
     initColumns=()=>{
@@ -25,13 +27,8 @@ export  default class Category extends Component{
                 key: 'profetype',
             },
             {
-                title: '编号',
-                dataIndex: 'profeId',
-                key: 'profeId',
-            },
-            {
                 title: '操作',
-                render:(category)=>(
+                render:(category)=>(//每一行代表一个分类对象，render都需要渲染该行，故取出该行
                     <span>
                         <LinkButton onClick={()=>this.showUpdate(category)}>修改分类信息</LinkButton>
                         {/*如何向事件回调函数传递参数：先定义一个匿名函数，在函数调用处理的函数并传入数据*/}
@@ -50,11 +47,6 @@ export  default class Category extends Component{
                 key: 'occuptype',
             },
             {
-                title: '编号',
-                dataIndex: 'occupId',
-                key: 'occupId',
-            },
-            {
                 title: '详细',
                 dataIndex: 'occupdetail',
                 key: 'occupdetail',
@@ -64,7 +56,7 @@ export  default class Category extends Component{
                 render:(category)=>(
                     <span>
                         <LinkButton onClick={()=>this.showUpdate(category)}>修改分类信息</LinkButton>
-
+                        <LinkButton onClick={()=>this.showDelete(category)}>删除</LinkButton>
                     </span>
                 )
             }
@@ -89,7 +81,7 @@ export  default class Category extends Component{
             else
             {this.setState({subCategorys:categorys});}
         }else{
-            message.error("获取分类列表失败")
+            message.error(result.msg)
         }
     }
 
@@ -102,7 +94,6 @@ export  default class Category extends Component{
             parentName:category.profetype
         },()=>{//在状态更新且重新render()后执行
             //console.log("parentId",this.state.parentId)
-
             //获取二级分类列表
             this.getCategory()
         })
@@ -120,31 +111,77 @@ export  default class Category extends Component{
     }
 
     //添加分类
-    addCategory=()=>{
-
+    addCategory=async ()=>{
+        //表单验证，通过才处理
+        this.form.validateFields(async (err,values)=>{
+            if(!err){
+                //1.隐藏确认框
+                this.setState({
+                    showStatus:0
+                })
+                //收集数据数据
+                const {parentId,categoryName,categoryContent,categoryId}=this.form.getFieldsValue()
+                console.log(parentId,categoryName,categoryContent,categoryId)
+                //清除数据
+                this.form.resetFields()
+                //2.发请求添加分类
+                const result=await reqAddCategory(categoryName,parentId,categoryContent,categoryId)
+                //3.
+                if(result.status===0){
+                    //重新分类
+                    this.getCategory()
+                }else{
+                    message.error(result.msg)
+                }
+            }
+        })
     }
 
     //显示添加的确认框
     showAdd=()=>{
         this.setState({
-            showStatus:1
+            showStatus: 1
         })
     }
 
     //更新分类
-    updateCategory=async ()=>{
-        //1.隐藏确认框
-        this.setState({
-            showStatus:0
+    updateCategory=()=>{
+        //表单验证，通过才处理
+        this.form.validateFields(async (err,values)=>{
+            if(!err){
+                //1.隐藏确认框
+                this.setState({
+                    showStatus:0
+                })
+                //准备数据
+                const categoryId=this.category.occupId===undefined?this.category.profeId:this.category.occupId
+                const categoryName=this.form.getFieldValue('categoryName')
+                const categoryContent=this.form.getFieldValue('categoryContent')
+                //清除数据
+                this.form.resetFields()
+                //2.发请求更新分类
+                const result=await reqUpdateCategory({categoryName,categoryId,categoryContent})
+                //3.重新分类
+                if(result.status===0) {
+                    this.getCategory()
+                }else {message.error(result.msg)}
+            }
         })
-        //准备数据
-        const categoryId=this.category.occupId===undefined?this.category.profeId:this.category.occupId
-        const categoryName=this.form.getFieldValue('categoryName')
-        const categoryContent=this.form.getFieldValue('categoryContent')
-        //2.发请求更新分类
-        const result=await reqUpdateCategory({categoryName,categoryId,categoryContent})
-        //3.重新分类
-        this.getCategory()
+    }
+    //删除分类
+    showDelete= (category)=>{
+        Modal.confirm({
+            title:`确认删除分类${category.occuptype}吗？`,
+        onOk:async ()=> {
+                console.log(category.occupId)
+            const result = await reqDeleteCategory(category.occupId)
+            if (result.status === 0) {
+                this.getCategory()
+            } else {
+                message.error(result.msg)
+            }
+        }
+        })
 
     }
 
@@ -158,8 +195,22 @@ export  default class Category extends Component{
         })
     }
 
+
+
     //响应点击取消：隐藏确认框
     handleCancel=()=>{
+        //清除数据
+        this.form.resetFields()
+        //隐藏对话框
+        this.setState({
+            showStatus:0
+        })
+    }
+    //响应点击取消：隐藏确认框
+    handleCancel2=()=>{
+        //清除数据
+        //this.form.resetFields()
+        //隐藏对话框
         this.setState({
             showStatus:0
         })
@@ -168,13 +219,11 @@ export  default class Category extends Component{
     //为第一次render()准备数据
     componentWillMount() {
         this.initColumns()
-
     }
 
     //发异步ajax请求
     componentDidMount() {
         this.getCategory ()
-
     }
 
     render() {
@@ -202,17 +251,18 @@ export  default class Category extends Component{
         return (
             <Card title={title} extra={extra} >
                 <Table dataSource={parentId==='0'?categorys:subCategorys}
-                       columns={this.columns} bordered={true} rowKey={'profeId'}
+                       columns={this.columns} bordered={true} rowKey={parentId==='0'?'profeId':'occupId'}
                        pagination={{defaultPageSize:5,showQuickJumper:true}} loading={loading}>
                 </Table>
                 <Modal title="添加分类" visible={showStatus===1} onOk={this.addCategory} onCancel={this.handleCancel}>
-                   <AddForm/>
+                    <AddForm parentId={parentId} categorys={categorys} setForm={(form)=>{this.form=form}}/>
                 </Modal>
                 <Modal title="更新分类" visible={showStatus===2} onOk={this.updateCategory} onCancel={this.handleCancel}>
                     <UpdateForm categoryName={category.profetype===undefined?category.occuptype:category.profetype}
                                 categoryContent={category.occupdetail} setForm={(form)=>{this.form=form}}> </UpdateForm>
                     {/*此处的setForm对象目的是将子组件的值传回父组件，并保存起来*/}
                 </Modal>
+
             </Card>
         )
     }

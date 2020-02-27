@@ -1,9 +1,9 @@
 import React,{Component} from 'react'
 import PropTypes from 'prop-types'
-import{Form,Select,Input} from "antd";
+import{Form,Input} from "antd";
 
 const Item=Form.Item
-const Option=Select.Option
+
 //更新分类的Form组件
  class UpdateForm extends Component{
     static propTypes={
@@ -27,7 +27,10 @@ const Option=Select.Option
                 <Item>
                     {
                         getFieldDecorator('categoryName',{
-                            initialValue:categoryName
+                            initialValue:categoryName,
+                            rules:[
+                                {required:true,message:"分类名称必须输入"}
+                            ]
                         })(
                             <Input placeholder='请输入分类名称'/>
                         )
@@ -36,7 +39,8 @@ const Option=Select.Option
                 {categoryContent===undefined ?null:<Item >
                     {
                         getFieldDecorator('categoryContent',{
-                            initialValue:categoryContent
+                            initialValue:categoryContent,
+
                         })(
                             <Input placeholder='请输入分类详细'/>
                         )

@@ -9,6 +9,7 @@ import Home from "../home/home";
 import Category from "../category/category";
 import Role from "../role/role";
 import User from "../user/user";
+import Manager from "../managers/manager";
 import Bar from "../charts/bar";
 import Line from "../charts/line";
 import Pie from "../charts/pie"
@@ -39,6 +40,7 @@ export  default class Admin extends Component{
                             <Route path='/category' component={Category}></Route>
                             <Route path='/role' component={Role}></Route>
                             <Route path='/user' component={User}></Route>
+                            <Route path='/manager' component={Manager}></Route>
                             <Route path='/bar' component={Bar}></Route>
                             <Route path='/line' component={Line}></Route>
                             <Route path='/pie' component={Pie}></Route>
