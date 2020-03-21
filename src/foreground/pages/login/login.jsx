@@ -6,7 +6,7 @@ import {Redirect} from 'react-router-dom'
 
 import "./login.less"
 import logo from '../../assets/image/tubiao.jpg'
-import {reqLogin}from '../../api'
+import {reqLogin, reqManager, reqManagers} from '../../api'
 
 import {connect} from "react-redux";
 import {login} from "../../redux/actions";
@@ -17,7 +17,7 @@ class Login extends Component{
     state={
         username:'',
         password:'',
-
+        remember:'',
     }
 
     handleSubmit=(event)=>{
@@ -30,10 +30,13 @@ class Login extends Component{
         form.validateFields(async (err, values) => {
             if (!err) {
                 //请求登录
-                const {username,password}=values
+                const {username,password,remember}=values
                     //调用分发异步action的函数=>发登录的异步请求，有了结果更新状态
-                this.props.login(username,password)
-
+                if(remember===true)
+                    this.props.login(username,password,1)
+                else
+                    this.props.login(username,password,0)
+                console.log('1')
                 /*const result=await reqLogin(username,password)//直接把response.data给result
                 //console.log("chenggong",result)
                 //const result=response.data //{status:0,data:user}  {status:1,msg:"xxx"}
@@ -58,9 +61,29 @@ class Login extends Component{
         });
     }
 
+    getUser=async ()=>{
+        const result=await reqManager()
+        if(result.data.length!==0){
+            const users=result.data[0]
+            const username=users.username
+            const password=users.password
+            this.state.roles=result.data[1]
+            this.setState({
+                username,
+                password,
+                remember:true
+            })
+        }
+    }
+
     toRegister=()=>{
         this.props.history.replace('/register')
     }
+
+    componentDidMount() {
+        this.getUser()
+    }
+
     /*
     对密码自定义验证
     * */
@@ -82,6 +105,7 @@ class Login extends Component{
     render(){
         //如果用户已经登陆，自动跳转到管理界面
         const user=this.props.user
+        const {username,password,remember}=this.state
         if(user.managerId&&user){
             return <Redirect to='/home'/>
         }
@@ -115,12 +139,12 @@ class Login extends Component{
                                         { max: 12, message: '用户名最多12位' },
                                         { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须是英文、数字或下划线组成' },
                                     ],
-                                    initialValue:'admin'
+                                    initialValue:username===null?'admin':username
 
                                 })(
                                     <Input
                                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                        placeholder="用户"
+                                        placeholder="用户名"
                                     />
                                 )
                             }
@@ -135,6 +159,7 @@ class Login extends Component{
                                         { max: 12, message: '密码最多12位' },
                                         { pattern: /^[a-zA-Z0-9_]+$/, message: '密码必须是英文、数字或下划线组成' },
                                     ],
+                                    initialValue:password===null?'':password
                                 })(
                                     <Input prefix={<Icon type='lock' style={{color:'raba(0,0,0,.25)'} }/>}
                                            placeholder="Password" type='password'/>
@@ -147,7 +172,7 @@ class Login extends Component{
                         <Form.Item>
                             {getFieldDecorator('remember', {
                                 valuePropName: 'checked',
-                                initialValue: true,
+                                initialValue: remember===''?false:true,
                             })(<Checkbox>Remember me</Checkbox>)}
                             <Button type="primary" htmlType="submit" className="login-form-button">
                                 登录

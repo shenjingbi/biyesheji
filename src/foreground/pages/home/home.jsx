@@ -1,14 +1,21 @@
 import React,{Component} from 'react'
 import './home.less'
-import {Card, message} from "antd";
-import ReactEcharts from "echarts-for-react";
-import {reqUsers} from "../../api";
-import moment from "moment";
-import {formateDate2} from "../../utils/dateUtils";
+import {Redirect, Switch, Route, withRouter} from 'react-router-dom'
+import {Layout} from "antd";
+
+import LeftNav from "./left_nav/left-nav";
+import User from "./user/user";
+import Favorite from './favorite'
+import Resume from './resume/resume'
+import Deliver from './deliver'
+import NotFound from "../not-found/not-found"
+import {connect} from "react-redux";
+
+const {Footer,Sider,Content,Header}=Layout
 /*
 首页路由
 * */
-export  default class Home extends Component{
+class Home extends Component{
 
     constructor(props) {
         super(props)
@@ -20,91 +27,35 @@ export  default class Home extends Component{
         }
         this.echartsReact = React.createRef()
     }
-
-
-    //返回柱状图的配置对象
-    getOption=()=>{
-        return {
-            title:{
-                text:'近气七天用户注册数量图',
-                left: "center"
-            },
-            tooltip:{},
-            legend:{
-                data:['用户','企业'],
-                y:'bottom'
-            },
-            xAxis:{
-                data:this.state.date
-
-            },
-            yAxis:{},
-            series:[
-                {
-                    name:'用户',
-                    type:'bar',
-                    data:this.state.user
-                },
-                {
-                    name:'企业',
-                    type:'bar',
-                    data:this.state.user
-                }
-            ],
-
-        }
-    }
-
-    //获取用户并更新图表
-    getUsers=async ()=>{
-        const result=await reqUsers()
-        if(result.status===0){
-                const users=result.data
-                const {user,newuse,date}=this.state
-                let i,t=0
-                for(i=-6;i<=0;i++)
-                {
-                    date[t++]=moment().add(i,"day").format('YYYY.MM.DD')
-                }
-                users.map((use)=>{
-                    const date1=moment(use.create_time);
-                    const date2=moment(Date.now());
-                    console.log(date2.diff(date1,"day"))
-                    if(date2.diff(date1,"day")<7){
-                        const date=date2.diff(date1,"day")
-                        user[6-date]++
-                        newuse[0]++
-                    }
-                })
-            this.setState({users,user,date})
-            this.echartsReact.getEchartsInstance().setOption(this.echartsReact.props.option)
-        }
-        else{
-            message.error(result.msg)
-        }
-    }
-
-    componentDidMount() {
-        this.getUsers()
-    }
-
     render() {
         const {user,users,newuse}=this.state
-        console.log(users,newuse)
+        const title=this.props.headTitle
         //console.log(moment(users).format('d'))
         return (
-            <div className='home'>
-                <div className='home-left' >
-                    <Card title="注册人数"  >
-                        <p>总用户人数：{users.length}</p>
-                        <p>近7天增加用户：{newuse[0]}</p>
-                    </Card>
-                </div>
 
-                <Card className='home-right'>
-                    <ReactEcharts option={this.getOption()} ref={(e)=>this.echartsReact=e} />
-                </Card>
-            </div>
+                    <Layout className="home" >
+                        <Sider className="left-nav" >
+                            <LeftNav/>
+                        </Sider>
+                        <Content className='content1'>
+                            <Header className='header1'>
+                                <div>{title}</div>
+                            </Header>
+                            <Switch>
+                                <Redirect exact={true} from='/home' to='/home/user'/>
+                                <Route path='/home/user' component={User}></Route>
+                                <Route path='/home/deliver' component={Deliver}></Route>
+                                <Route path='/home/favorite' component={Favorite}></Route>
+                                <Route path='/home/resume' component={Resume}></Route>
+                                <Route component={NotFound}/>
+                            </Switch>
+                        </Content>
+                    </Layout>
+
+
         )
     }
 }
+export  default connect(
+    state=>({headTitle:state.headTitle,user:state.user}),
+)(withRouter(Home))

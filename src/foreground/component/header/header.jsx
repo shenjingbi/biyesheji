@@ -6,13 +6,16 @@ import './header.less'
 import {formateDate} from '../../utils/dateUtils'
 import {reqWeather} from "../../api";
 
-import {Modal} from "antd";
+import { Modal} from "antd";
+import {
+    HomeOutlined
+} from '@ant-design/icons';
 import {logout} from '../../redux/actions'
 import LinkButton from "../link-button/button";
 /*
 左侧导航的组件
 * */
- class Header extends Component{
+ class Header1 extends Component{
     state={
         currentTime:formateDate(Date.now()),//当前时间字符串
         dayPictureUrl:'',
@@ -31,25 +34,6 @@ import LinkButton from "../link-button/button";
         const {dayPictureUrl,weather}=await reqWeather('南通')
         this.setState({dayPictureUrl,weather})
     }
-
-    /*getTitle=()=>{
-        const path= this.props.location.pathname
-        let title
-            menuList.forEach(item=>{
-                if(item.key===path){//如果当前item对象的key与path一样，item的title就是需要显示的title
-                    title=item.title
-                }else if(item.children){
-                    //在所有子item中查找匹配的
-                    const cItem=item.children.find(cItem=>cItem.key===path)
-                    //如果有值才说明有值
-                    if(cItem){
-                        //取出title
-                        title=cItem.title
-                    }
-                }
-            })
-        return title
-    }*/
 
     logout=()=>{
         //显示确认框
@@ -91,11 +75,17 @@ import LinkButton from "../link-button/button";
         return (
             <div className='header'>
                 <div className='header-top'>
-                    <span>欢迎，{username}</span>
-                    <LinkButton  onClick={this.logout}>退出</LinkButton>
+                    <div className='header-top-left'>
+                        <LinkButton ><HomeOutlined/> 高校招聘</LinkButton>
+                    </div>
+
+                    <div className='header-top-right'>
+                        <span>欢迎，{username}</span>
+                        <LinkButton  onClick={this.logout}>退出</LinkButton>
+                    </div>
                 </div>
                 <div className='header-bottom'>
-                    <div className='header-bottom-left'>{title}</div>
+                    <div className='header-bottom-left'>个人中心</div>
                     <div className='header-bottom-right'>
                         <span>{currentTime}</span>
                         <img src={dayPictureUrl} alt='weather'/>
@@ -110,5 +100,5 @@ import LinkButton from "../link-button/button";
 export  default connect(
     state=>({headTitle:state.headTitle,user:state.user}),
     {logout}
-)(withRouter(Header))
+)(withRouter(Header1))
 //withRouter(Header)将该组件变成路由组件，connect将该组件变称容器组件

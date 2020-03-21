@@ -4,9 +4,8 @@ import {Menu,Icon} from "antd";
 import {connect} from 'react-redux'
 
 import './left-nav.less'
-import logo from '../../assets/image/tubiao.jpg'
-import menuList from "../../config/menuConfig";
-import {setHeadTitle} from "../../redux/actions";
+import menuList from "../../../config/menuConfig";
+import {setHeadTitle} from "../../../redux/actions";
 
 const SubMenu=Menu.SubMenu
 
@@ -100,9 +99,10 @@ class LeftNav extends Component{
             <div className='left-nav'>
                 <Menu
                     mode="inline"
-                    theme="white"
+                    theme="light"
                     selectedKeys={[path]}
                     defaultOpenKeys={[openKey]}
+                    className='menu'
                 >
                     {
                         this.menuNodes

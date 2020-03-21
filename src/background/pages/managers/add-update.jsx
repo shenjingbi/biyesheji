@@ -99,7 +99,7 @@ class ManagerAddUpdate extends Component{
                         })(
                             <Select placeholder='请选择所属角色'>
                                 {
-                                    roles.map(role=><Option key={manager.managerId} value={role.role_name}>{role.role_name}</Option>)
+                                    roles.map(role=><Option key={role.role_name} value={role.role_name}>{role.role_name}</Option>)
                                 }
                             </Select>
                         )

@@ -5,7 +5,7 @@ import {setHeadTitle} from '../../redux/actions'
 import './not-found.less' /*前台 404 页面 */
 class NotFound extends Component {
     goHome = () => {
-        this.props.setHeadTitle('首页')
+        this.props.setHeadTitle('个人信息')
         this.props.history.replace('/home')
     }
 
@@ -15,7 +15,7 @@ class NotFound extends Component {
             <Col span={12} className='left'></Col> <Col span={12} className='right'>
                 <h1>404</h1> <h2>抱歉，你访问的页面不存在</h2>
                 <div>
-                    <Button type='primary' onClick={this.goHome}> 回到首页 </Button>
+                    <Button type='primary' onClick={this.goHome}> 回到个人中心 </Button>
                 </div>
             </Col>
         </Row>

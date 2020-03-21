@@ -12,10 +12,10 @@ export const setHeadTitle=(headTitle)=>({type:SET_HEAD_TITLE,data:headTitle})
 export const receiveUser=(user1)=>({type:RECEIVE_USER,data:user1})
 
 //登录的异步action：返回的是函数
-export const login=(username,password)=>{
+export const login=(username,password,remember)=>{
     return async dispatch=>{
         //1.执行异步（定时器，ajax请求，promise）
-        const result=await reqLogin(username,password)
+        const result=await reqLogin(username,password,remember)
         //2.成功，分发成功的同步action
         if(result.status===0){
             const user1=result.data[0]
@@ -25,7 +25,7 @@ export const login=(username,password)=>{
             dispatch(receiveUser(user1))
         }else {
             //失败，分发失败的同步action
-            message.error(1)
+            message.error('登录失败，账号密码不正确')
         }
     }
 }

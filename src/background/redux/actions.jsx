@@ -25,7 +25,7 @@ export const login=(username,password)=>{
             dispatch(receiveUser(user1))
         }else {
             //失败，分发失败的同步action
-            message.error(1)
+            message.error('登录失败，账号密码不正确')
         }
     }
 }

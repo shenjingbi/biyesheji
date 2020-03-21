@@ -7,8 +7,9 @@ import {Provider} from 'react-redux'
 import Login from './foreground/pages/login/login'
 import Register from './foreground/pages/register/registers'
 import Admin from './foreground/pages/admin/admin'
-import store from "./foreground/redux/store";
 
+import store from "./foreground/redux/store";
+import Home from "./foreground/pages/home/home";
 
 
 

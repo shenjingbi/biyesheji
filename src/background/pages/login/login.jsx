@@ -33,7 +33,7 @@ class Login extends Component{
                 const {username,password}=values
                     //调用分发异步action的函数=>发登录的异步请求，有了结果更新状态
                 this.props.login(username,password)
-
+                console.log('1')
                 /*const result=await reqLogin(username,password)//直接把response.data给result
                 //console.log("chenggong",result)
                 //const result=response.data //{status:0,data:user}  {status:1,msg:"xxx"}

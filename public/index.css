@@ -10,7 +10,7 @@ li {
 .handle {
   width: 40px;
   border: 1px solid #ccc;
-  background: #fff;
+  background: white;
   position: absolute;
   right: 10px;
   top: 1px;

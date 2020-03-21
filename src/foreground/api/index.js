@@ -14,7 +14,10 @@ const BASE=''
 /*export function reqLogin(username ,password) {
     return ajax('/login',{username ,password},'POST')
 }*/
-export const reqLogin=(username ,password)=>ajax(BASE+'/login',{username ,password},'POST')
+export const reqLogin=(username ,password,remember)=>ajax(BASE+'/login',{username ,password,remember},'POST')
+//获取checked为1的用户
+export const reqManager=()=>ajax(BASE+'/checked')
+
 
 //注册,当传递的本身是对象时,不需要大括号包裹,传递的是值时，则需要大括号包裹
 export const reqRegister=(user)=>ajax(BASE+'/register',user,'POST')
@@ -84,3 +87,9 @@ export const reqDeleteManagers=(ManagerName)=>ajax(BASE+'/manager/list',{Manager
 export const reqAddManagers=(manager)=>ajax(BASE+'/manager/add',manager,'POST')
 //更新管理员
 export const reqUpdateManagers=(manager)=>ajax(BASE+'/manager/update',manager,'POST')
+
+//更新图片
+export const reqUpdatePhotos=(file)=>ajax(BASE+'/user/photo',file,'POST')
+
+//添加简历
+export const reqAddResume=(resume,userId)=>ajax(BASE+'/home/resume/add',{resume,userId},'POST')

@@ -32,12 +32,10 @@ class Admin extends Component{
         }
         return (
             <Layout style={{height:'100%'}}>
-                <Sider>
-                    <LeftNav/>
-                </Sider>
                 <Layout>
                     <Header>Header</Header>
-                    <Content style={{backgroundColor:'#fff',margin:20}}>
+                    <LeftNav/>
+                    <Content style={{backgroundColor:'white',margin:20}}>
                         <Switch>
                             <Redirect exact={true} from='/' to='/home'/>
                             <Route path='/home' component={Home}></Route>
