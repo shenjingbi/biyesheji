@@ -10,7 +10,7 @@ import { Modal} from "antd";
 import {
     HomeOutlined
 } from '@ant-design/icons';
-import {logout} from '../../redux/actions'
+import {logout, setHeadTitle2} from '../../redux/actions'
 import LinkButton from "../link-button/button";
 /*
 左侧导航的组件
@@ -48,6 +48,7 @@ import LinkButton from "../link-button/button";
         })
     }
 
+
     /*
     当前组件卸载之前调用
     * */
@@ -71,25 +72,28 @@ import LinkButton from "../link-button/button";
         const username=this.props.user.username
         //得到当前需要显示的title
         //const title=this.getTitle()
-        const title=this.props.headTitle
+        const title=this.props.headTitle2
         return (
             <div className='header'>
                 <div className='header-top'>
                     <div className='header-top-left'>
-                        <LinkButton ><HomeOutlined/> 高校招聘</LinkButton>
+                        <LinkButton onClick={()=>{this.props.history.push('/recruit');this.props.setHeadTitle2('')}}><HomeOutlined/>高校招聘</LinkButton>
+                        <span style={{marginLeft:20}}>{currentTime}</span>
+                        <img src={dayPictureUrl} style={{marginLeft:30}} alt='weather'/>
+                        <span style={{marginLeft:50}}>{weather}</span>
                     </div>
 
                     <div className='header-top-right'>
                         <span>欢迎，{username}</span>
                         <LinkButton  onClick={this.logout}>退出</LinkButton>
+                        <LinkButton onClick={()=>this.props.history.push('/home')}>个人中心</LinkButton>
+                        <LinkButton onClick={()=>this.props.history.push('/business')}>商家中心</LinkButton>
                     </div>
                 </div>
                 <div className='header-bottom'>
-                    <div className='header-bottom-left'>个人中心</div>
-                    <div className='header-bottom-right'>
-                        <span>{currentTime}</span>
-                        <img src={dayPictureUrl} alt='weather'/>
-                        <span>{weather}</span>
+
+                    <div className='header-bottom-left'>
+                        高校招聘{title===''?null:'·'}{title}
                     </div>
                 </div>
             </div>
@@ -98,7 +102,7 @@ import LinkButton from "../link-button/button";
 }
 
 export  default connect(
-    state=>({headTitle:state.headTitle,user:state.user}),
-    {logout}
+    state=>({headTitle2:state.headTitle2,user:state.user}),
+    {setHeadTitle2}
 )(withRouter(Header1))
 //withRouter(Header)将该组件变成路由组件，connect将该组件变称容器组件

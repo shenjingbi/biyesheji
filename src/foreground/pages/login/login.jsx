@@ -6,7 +6,7 @@ import {Redirect} from 'react-router-dom'
 
 import "./login.less"
 import logo from '../../assets/image/tubiao.jpg'
-import {reqLogin, reqManager, reqManagers} from '../../api'
+import {reqUser} from '../../api'
 
 import {connect} from "react-redux";
 import {login} from "../../redux/actions";
@@ -36,33 +36,16 @@ class Login extends Component{
                     this.props.login(username,password,1)
                 else
                     this.props.login(username,password,0)
-                console.log('1')
-                /*const result=await reqLogin(username,password)//直接把response.data给result
-                //console.log("chenggong",result)
-                //const result=response.data //{status:0,data:user}  {status:1,msg:"xxx"}
-                if(result.status===0){//成功
-                    //提示登录成功
-                    message.success('登录成功')
 
-                    //保存user
-                    const user=result.data
-                    //console.log(user[0].username)
-                    memoryUtils.user=user[0] //保存在内存中
-                    storageUtils.saveUser(user[0])
-
-                    //跳转到管理界面
-                    this.props.history.replace('/home')
-                }else {//失败
-                    message.error(result.msg)
-                }*/
             }else {
                 console.log('校验失败')
             }
         });
     }
 
+    //获取记住密码的用户
     getUser=async ()=>{
-        const result=await reqManager()
+        const result=await reqUser()
         if(result.data.length!==0){
             const users=result.data[0]
             const username=users.username
@@ -106,7 +89,7 @@ class Login extends Component{
         //如果用户已经登陆，自动跳转到管理界面
         const user=this.props.user
         const {username,password,remember}=this.state
-        if(user.managerId&&user){
+        if(user.userId&&user){
             return <Redirect to='/home'/>
         }
 

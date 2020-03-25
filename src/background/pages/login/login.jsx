@@ -1,6 +1,5 @@
 import React,{Component} from 'react'
-//import PropTypes from 'prop-types'
-//import {connect} from "react-redux";
+
 import {Button, Form, Icon, Input, message,Checkbox} from "antd";
 import {Redirect} from 'react-router-dom'
 
@@ -10,6 +9,7 @@ import {reqLogin}from '../../api'
 
 import {connect} from "react-redux";
 import {login} from "../../redux/actions";
+import {reqUser} from "../../api";
 
 const Item=Form.Item //必须写在import之后
 
@@ -60,6 +60,26 @@ class Login extends Component{
 
     toRegister=()=>{
         this.props.history.replace('/register')
+    }
+
+    //获取记住密码的用户
+    getUser=async ()=>{
+        const result=await reqUser()
+        if(result.data.length!==0){
+            const users=result.data[0]
+            const username=users.username
+            const password=users.password
+            this.state.roles=result.data[1]
+            this.setState({
+                username,
+                password,
+                remember:true
+            })
+        }
+    }
+
+    componentDidMount() {
+        this.getUser()
     }
     /*
     对密码自定义验证

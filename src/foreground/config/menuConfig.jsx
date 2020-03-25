@@ -6,7 +6,7 @@ const menuList=[
         isPublic:true //公开的
     },
     {
-        title:'个人简历',
+        title:'我的简历',
         key:'/home/resume',
         icon:'home',
 

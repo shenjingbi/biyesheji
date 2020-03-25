@@ -7,9 +7,12 @@ import LeftNav from "./left_nav/left-nav";
 import User from "./user/user";
 import Favorite from './favorite'
 import Resume from './resume/resume'
+import AddResume from './resume/addupdresume'
+import ShowFind from './resume/findandstore'
 import Deliver from './deliver'
 import NotFound from "../not-found/not-found"
 import {connect} from "react-redux";
+import {setHeadTitle2} from "../../redux/actions";
 
 const {Footer,Sider,Content,Header}=Layout
 /*
@@ -27,6 +30,11 @@ class Home extends Component{
         }
         this.echartsReact = React.createRef()
     }
+
+    componentDidMount() {
+        this.props.setHeadTitle2('个人中心')
+    }
+
     render() {
         const {user,users,newuse}=this.state
         const title=this.props.headTitle
@@ -47,6 +55,8 @@ class Home extends Component{
                                 <Route path='/home/deliver' component={Deliver}></Route>
                                 <Route path='/home/favorite' component={Favorite}></Route>
                                 <Route path='/home/resume' component={Resume}></Route>
+                                <Route path='/home/addupdresume' component={AddResume}></Route>
+                                <Route path='/home/showresume' component={ShowFind}></Route>
                                 <Route component={NotFound}/>
                             </Switch>
                         </Content>
@@ -57,5 +67,6 @@ class Home extends Component{
     }
 }
 export  default connect(
-    state=>({headTitle:state.headTitle,user:state.user}),
+    state=>({headTitle:state.headTitle,user:state.user,headTitle2:state.headTitle2}),
+    {setHeadTitle2}
 )(withRouter(Home))

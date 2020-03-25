@@ -1,24 +1,18 @@
 import React,{Component} from 'react'
-import {Switch,Route} from "react-router-dom";
-import {Card, Button, Table, Modal, message, Avatar, Upload, Form, Input} from 'antd'
+import {Switch, Route, withRouter} from "react-router-dom";
+import {Card,Button, message, Avatar, Form} from 'antd'
 
 import {
-    reqAddManagers,
-    reqAddResume,
-    reqAddUsers,
-    reqDeleteUsers,
+    reqResume,
     reqUpdatePhotos,
-    reqUpdateUsers,
-    reqUsers
-} from "../../../api";
-import {connect} from "react-redux";
-import {login} from "../../../redux/actions";
-import LinkButton from "../../../component/link-button/button";
-import ResumeAdd from "./addresume";
+} from "../../../api"
+import {connect} from "react-redux"
+import {login, setHeadTitle} from "../../../redux/actions"
+import './resume.less'
+import ShowResume from "./showresume"
 
-const Item=Form.Item
 /*
-个人信息
+我的简历
 * */
  class Resume extends Component{
     state={
@@ -27,28 +21,25 @@ const Item=Form.Item
         previewVisible: false,
         previewImage: '',
         fileList: [],
-        showStatus:false //是否显示确认框
+
     }
-    //添加或更新用户
-     addResume=()=>{
-        console.log('1')
 
-         this.form.validateFields(async (err,values)=>{
-             if(!err){
-                 //2.提交添加请求
-                 const userId=this.props.user.managerId
-                 console.log(userId)
-                 const result=await reqAddResume(values,userId)
-                 //清空输入框
-                 this.form.resetFields()
-                 //3.更新列表显示
-                 if(result.status===0){
-                     message.success('添加用户成功')
-                 }
+
+     //异步获取简历信息
+     getResume=async ()=>{
+         //发请求前显示loading
+         this.setState({loading:true})
+         //发异步ajax请求，获取数据
+         const userId=this.props.user.userId
+         const result=await reqResume(userId)
+         if(result.status===0){
+             const resume=result.data
+             if(resume.length>=0){
+                 this.setState({resume})
              }
-
-
-         })
+         }else{
+             message.error(result.msg)
+         }
      }
      handleCancel = () => this.setState({ previewVisible: false });
      handlePreview = async file => {
@@ -64,6 +55,13 @@ const Item=Form.Item
 
      handleChange = ({ fileList }) => this.setState({ fileList });
 
+     //显示添加的确认框
+     showAdd=()=>{
+         this.setState({
+             showStatus: 'none'
+
+         })
+     }
 
      //显示更新界面
     showUpdate=(user)=>{
@@ -75,28 +73,35 @@ const Item=Form.Item
          this.setState({showStatus: true})
      }
 
+     componentWillMount() {
+        this.getResume()
+     }
 
-
-    render() {
-        const { resume,previewVisible, previewImage, fileList } = this.state;
-        const formItemLayout={
-            labelCol:{span:4},
-            wrapperCol:{span:15}
-        }
+     render() {
+        const {resume,previewVisible, previewImage, fileList,showStatus} = this.state;
         const title=<div>
                         <Avatar size='large' icon='user' />
                     </div>
         return (
             <div>
-                <ResumeAdd setForm={(form)=>this.form=form}/>
-                <Button type='primary' style={{marginLeft:350}} onClick={()=>this.addResume()}>保存简历</Button>
+                {
+                    resume.length===0?
+                        (   <div style={{marginLeft:50,display:showStatus}} >
+                                <span style={{fontSize:15}}>简历是求职的利器，填写简历才能更快找到好工作！</span><br/>
+                                <span style={{fontSize:15}}>去填写一份优质的简历吧，认真的人，才能让认真的企业找上你！</span><br/>
+                                <Button type='danger' style={{marginLeft:50}} onClick={()=>{this.props.history.push('/home/addupdresume');}}>去创建一份简历吧</Button>
+                            </div>
+
+                        ):(
+                            <ShowResume/>
+                        )
+
+                }
             </div>
-
-
         )
     }
 }
 export default connect(
     state=>({user:state.user}),
-    {login}
-)(Resume)
+    {login,setHeadTitle}
+)(withRouter(Resume))

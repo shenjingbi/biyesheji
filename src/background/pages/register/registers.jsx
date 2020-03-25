@@ -1,11 +1,10 @@
 import React,{Component} from 'react'
 import {Button,Form,Icon,Input,message} from "antd";
 import {connect} from 'react-redux'
-//import {Redirect} from 'react-router-dom'
 
 import "./registers.less"
 import logo from '../../assets/image/tubiao.jpg'
-import {reqRegister}from '../../api'
+import {reqRegisterManager} from '../../api'
 
 
 const Item=Form.Item //必须写在import之后
@@ -20,21 +19,17 @@ class Register extends Component{
     handleSubmit=(event)=>{
         //阻止事件的默认行为
         event.preventDefault();
-
         //得到form对象
         const form=this.props.form
         //获得表单项的输入数据，对所有的表单字段进行校验
         form.validateFields(async (err, values) => {
             if (!err) {
-
-
                 /*reqLogin(username,password).then(response=>{
                     console.log("chenggong",response.data)
                 }).catch(error=>{
                     console.log("shibai",error)
                 });*/
-
-                const result=await reqRegister(values)//直接把response.data给result
+                const result=await reqRegisterManager(values)//直接把response.data给result
                 //console.log("chenggong",result)
                 //const result=response.data //{status:0,data:user}  {status:1,msg:"xxx"}
                 if(result.status===0){//成功

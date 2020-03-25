@@ -7,6 +7,8 @@
 import ajax from "./ajax";//此处的ajax是由ajax.js封装的axios
 import jsonp from 'jsonp'
 import {message} from "antd";
+import LinkButton from "../component/link-button/button";
+import React from "react";
 
 //const BASE='http://localhost:5000'
 const BASE=''
@@ -14,13 +16,14 @@ const BASE=''
 /*export function reqLogin(username ,password) {
     return ajax('/login',{username ,password},'POST')
 }*/
-export const reqLogin=(username ,password,remember)=>ajax(BASE+'/login',{username ,password,remember},'POST')
+export const reqLoginUser=(username ,password,remember)=>ajax(BASE+'/loginu',{username ,password,remember},'POST')
+
 //获取checked为1的用户
-export const reqManager=()=>ajax(BASE+'/checked')
+export const reqUser=()=>ajax(BASE+'/checkedu')
 
 
 //注册,当传递的本身是对象时,不需要大括号包裹,传递的是值时，则需要大括号包裹
-export const reqRegister=(user)=>ajax(BASE+'/register',user,'POST')
+export const reqRegisterUser=(user)=>ajax(BASE+'/registeru',user,'POST')
 
 //jsonp请求的接口请求函数
 export const reqWeather=(city)=>{
@@ -51,14 +54,6 @@ export const reqUpdateCategory=({categoryName,categoryId,categoryContent})=>ajax
 //删除分类
 export const reqDeleteCategory=(categoryId)=>ajax(BASE+'/category/delete',{categoryId},'POST')
 
-//获取所有角色的列表role
-export const reqRole=()=>ajax(BASE+'/role/list')
-//添加角色role
-export const reqAddRole=(roleName)=>ajax(BASE+'/role/add',{roleName},'POST')
-//更新角色权限
-export const reqUpdateRole=(role)=>ajax(BASE+'/role/update',role,'POST')
-//删除角色
-export const reqDeleteRole=(roleName)=>ajax(BASE+'/role/delete',{roleName},'POST')
 
 //显示用户列表
 export const reqUsers=()=>ajax(BASE+'/user/list')
@@ -93,3 +88,22 @@ export const reqUpdatePhotos=(file)=>ajax(BASE+'/user/photo',file,'POST')
 
 //添加简历
 export const reqAddResume=(resume,userId)=>ajax(BASE+'/home/resume/add',{resume,userId},'POST')
+//获取简历信息
+export const reqResume=(userId)=>ajax(BASE+'/home/resume/list',{userId},'POST')
+//删除简历信息
+export const reqDeleteResume=(resumeid)=>ajax(BASE+'/home/resume/delete',{resumeid},'POST')
+//更新简历信息
+export const reqUpdateResume=(resume,resumeid)=>ajax(BASE+'/home/resume/update',{resume,resumeid},'POST')
+
+//获取收藏信息
+export const reqFavorite=(username)=>ajax(BASE+'/home/favorite',{username},'POST')
+//获取被收藏信息
+export const reqBeFavorite=()=>ajax(BASE+'/home/befavorite')
+//删除简历信息
+export const reqDeleteFavorite =(resumeid)=>ajax(BASE+'/home/favorite/delete',{resumeid},'POST')
+
+//获取收藏信息
+export const reqDeliver=(username)=>ajax(BASE+'/home/deliver',{username},'POST')
+
+//获取收藏信息
+export const reqOccupation=()=>ajax(BASE+'/recruit/list',{},'POST')

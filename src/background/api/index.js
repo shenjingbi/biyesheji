@@ -14,10 +14,13 @@ const BASE=''
 /*export function reqLogin(username ,password) {
     return ajax('/login',{username ,password},'POST')
 }*/
-export const reqLogin=(username ,password)=>ajax(BASE+'/login',{username ,password},'POST')
+export const reqLoginManager=(username ,password)=>ajax(BASE+'/loginm',{username ,password},'POST')
 
 //注册,当传递的本身是对象时,不需要大括号包裹,传递的是值时，则需要大括号包裹
-export const reqRegister=(user)=>ajax(BASE+'/register',user,'POST')
+export const reqRegisterManager=(user)=>ajax(BASE+'/registerm',user,'POST')
+
+//获取checked为1的用户
+export const reqUser=()=>ajax(BASE+'/checkedu')
 
 //jsonp请求的接口请求函数
 export const reqWeather=(city)=>{

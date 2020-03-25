@@ -2,7 +2,7 @@
 reducer函数模块：根据当前state和指定action返回一个新的state
 * */
 import {combineReducers} from 'redux'
-import {SET_HEAD_TITLE,RECEIVE_USER,LOG_OUT} from "./actions-types";
+import {SET_HEAD_TITLE,RECEIVE_USER,LOG_OUT,SET_HEAD_TITLE2} from "./actions-types";
 //import {ADD_COMMENT, DELETE_COMMENT} from "./actions-types";
 import storageUtils from "../utils/storageUtils";
 
@@ -11,6 +11,16 @@ const initHeadTitle=''
 function headTitle(state=initHeadTitle,action) {
     switch (action.type) {
         case SET_HEAD_TITLE:
+            return  action.data
+        default:
+            return state
+    }
+}
+
+const initHeadTitle2=''
+function headTitle2(state=initHeadTitle2,action) {
+    switch (action.type) {
+        case SET_HEAD_TITLE2:
             return  action.data
         default:
             return state
@@ -34,5 +44,6 @@ function user(state=initUser,action) {
 //总的reducer函数管理的state的结构 {headTitle:'首页',user:{}}
 export default combineReducers({
     headTitle,
+    headTitle2,
     user
 })

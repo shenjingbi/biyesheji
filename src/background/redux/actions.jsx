@@ -1,6 +1,6 @@
 
 import {SET_HEAD_TITLE, RECEIVE_USER, LOG_OUT} from "./actions-types";
-import {reqLogin} from "../api";
+import {reqLoginManager} from "../api";
 import {message} from "antd";
 import storageUtils from "../utils/storageUtils";
 
@@ -15,7 +15,7 @@ export const receiveUser=(user1)=>({type:RECEIVE_USER,data:user1})
 export const login=(username,password)=>{
     return async dispatch=>{
         //1.执行异步（定时器，ajax请求，promise）
-        const result=await reqLogin(username,password)
+        const result=await reqLoginManager(username,password)
         //2.成功，分发成功的同步action
         if(result.status===0){
             const user1=result.data[0]
