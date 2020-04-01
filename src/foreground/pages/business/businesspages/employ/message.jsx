@@ -3,23 +3,15 @@ import {Switch,Route} from "react-router-dom";
 import {Card, Button, Table, Modal, message, Avatar, Upload, Menu} from 'antd'
 
 
-import {
-    reqAddManagers,
-    reqAddUsers, reqBeFavorite, reqDeleteFavorite,
-    reqDeleteUsers,
-    reqFavorite,
-    reqUpdatePhotos,
-    reqUpdateUsers,
-    reqUsers
-} from "../../api";
+import {reqBeFavorite, reqDeleteFavorite, reqFavorite} from "../../../../api";
 import {connect} from "react-redux";
-import {login} from "../../redux/actions";
-import LinkButton from "../../component/link-button/button";
+import LinkButton from "../../../../component/link-button/button";
 import {MailOutlined} from "@ant-design/icons";
+import {formateDate} from "../../../../utils/dateUtils";
 /*
 我的收藏
 * */
- class Favorite extends Component{
+ class Message extends Component{
      state = {
          current: 'collect',
          favorite:[],  //我的收藏和被收藏
@@ -28,19 +20,21 @@ import {MailOutlined} from "@ant-design/icons";
      initColumns=()=>{
          this.columns=[
              {
-                 title: '信息标题',
-                 dataIndex: 'emname',
-                 key: 'emname',
+                 title: '简历信息',
+                 dataIndex: 'resumename',
+                 key: 'resumename',
              },
              {
-                 title: '收藏时间',
+                 title: '投递时间',
                  dataIndex: 'create_time',
                  key: 'create_time',
+                 render:formateDate
              },
              {
                  title: '操作',
                  render:(resume)=>(//每一行代表一个分类对象，render都需要渲染该行，故取出该行
                      <span>
+                        <LinkButton onClick={()=>this.showDelete(resume)}>查看</LinkButton>
                         <LinkButton onClick={()=>this.showDelete(resume)}>删除</LinkButton>
                     </span>
                  )
@@ -146,11 +140,11 @@ import {MailOutlined} from "@ant-design/icons";
                 >
                     <Menu.Item key="collect" >
                         <MailOutlined />
-                        我收藏的信息
+                        投递的简历
                     </Menu.Item>
                     <Menu.Item key="becollect">
                         <MailOutlined />
-                        谁收藏了我的信息
+                        我的邀请
                     </Menu.Item>
                 </Menu>
                 <Table dataSource={favorite}
@@ -165,4 +159,4 @@ import {MailOutlined} from "@ant-design/icons";
 export default connect(
     state=>({user:state.user}),
     {}
-)(Favorite)
+)(Message)

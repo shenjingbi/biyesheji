@@ -3,19 +3,12 @@ import {Switch,Route} from "react-router-dom";
 import {Card, Button, Table, Modal, message, Avatar, Upload, Menu} from 'antd'
 
 
-import {
-    reqAddManagers,
-    reqAddUsers, reqBeFavorite, reqDeleteFavorite,
-    reqDeleteUsers,
-    reqFavorite,
-    reqUpdatePhotos,
-    reqUpdateUsers,
-    reqUsers
-} from "../../api";
+import {reqBeFavorite, reqDeleteFavorite, reqFavorite} from "../../api";
 import {connect} from "react-redux";
 import {login} from "../../redux/actions";
 import LinkButton from "../../component/link-button/button";
 import {MailOutlined} from "@ant-design/icons";
+import {formateDate, formateDate2} from "../../utils/dateUtils";
 /*
 我的收藏
 * */
@@ -36,6 +29,7 @@ import {MailOutlined} from "@ant-design/icons";
                  title: '收藏时间',
                  dataIndex: 'create_time',
                  key: 'create_time',
+                 render:formateDate
              },
              {
                  title: '操作',
@@ -65,6 +59,7 @@ import {MailOutlined} from "@ant-design/icons";
                  title: '收藏时间',
                  dataIndex: 'create_time',
                  key: 'create_time',
+                 render:formateDate
              },
              {
                  title: '操作',
@@ -81,8 +76,8 @@ import {MailOutlined} from "@ant-design/icons";
          console.log('click ', e.key);
          if(e.key==="collect"){
              this.initColumns()
-             const username=this.props.user.username
-             const result=await reqFavorite(username)
+             const userId=this.props.user.userId
+             const result=await reqFavorite(userId)
              const favorite=result.data
              this.setState({favorite,current: e.key,})
          }else{
@@ -96,8 +91,8 @@ import {MailOutlined} from "@ant-design/icons";
 
      //异步获取简历信息
      getFavorite=async ()=>{
-         const username=this.props.user.username
-         const result=await reqFavorite(username)
+         const userId=this.props.user.userId
+         const result=await reqFavorite(userId)
          if(result.status===0){
              const favorite=result.data
              this.setState({favorite})
@@ -114,10 +109,8 @@ import {MailOutlined} from "@ant-design/icons";
                  console.log(favorite)
                  const result=await reqDeleteFavorite(favorite.favoriteid)
                  if(result.status===0){
-                     message.success('删除简历成功')
-                     this.setState({resume:[]})
-                     this.getResume()
-                     this.props.history.replace('/home/resume')
+                     message.success('删除成功')
+                     this.getFavorite()
                  }
              }
          })

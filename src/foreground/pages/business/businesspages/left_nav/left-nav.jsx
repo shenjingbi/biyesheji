@@ -4,9 +4,8 @@ import {Menu,Icon} from "antd";
 import {connect} from 'react-redux'
 
 import './left-nav.less'
-import logo from '../../assets/image/tubiao.jpg'
-import menuList from "../../config/menuConfig";
-import {setHeadTitle} from "../../redux/actions";
+import menuList from "../../../../config/menuConfigb";
+import {setHeadTitle} from "../../../../redux/actions";
 
 const SubMenu=Menu.SubMenu
 

@@ -203,7 +203,7 @@ class Register extends Component{
     }
 }
 
-const Wrapregister=Form.create()(Register)
+const Wrapregister=(Register)
 export default connect(
     state=>({user:state.user}),
     {}

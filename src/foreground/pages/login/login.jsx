@@ -30,12 +30,12 @@ class Login extends Component{
         form.validateFields(async (err, values) => {
             if (!err) {
                 //请求登录
-                const {username,password,remember}=values
+                const {account,password,remember}=values
                     //调用分发异步action的函数=>发登录的异步请求，有了结果更新状态
                 if(remember===true)
-                    this.props.login(username,password,1)
+                    this.props.login(account,password,1)
                 else
-                    this.props.login(username,password,0)
+                    this.props.login(account,password,0)
 
             }else {
                 console.log('校验失败')
@@ -48,11 +48,11 @@ class Login extends Component{
         const result=await reqUser()
         if(result.data.length!==0){
             const users=result.data[0]
-            const username=users.username
+            const account=users.account
             const password=users.password
             this.state.roles=result.data[1]
             this.setState({
-                username,
+                account,
                 password,
                 remember:true
             })
@@ -88,7 +88,7 @@ class Login extends Component{
     render(){
         //如果用户已经登陆，自动跳转到管理界面
         const user=this.props.user
-        const {username,password,remember}=this.state
+        const {account,password,remember}=this.state
         if(user.userId&&user){
             return <Redirect to='/home'/>
         }
@@ -114,20 +114,20 @@ class Login extends Component{
                                 * */
                             }
                             {
-                                getFieldDecorator('username',{//配置对象：属性名是特定的一些名称
+                                getFieldDecorator('account',{//配置对象：属性名是特定的一些名称
                                     //声明式验证
                                     rules: [
-                                        { required: true,whitespace:true, message: '用户名必须输入' },
-                                        { min: 4, message: '用户名至少4位' },
-                                        { max: 12, message: '用户名最多12位' },
-                                        { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须是英文、数字或下划线组成' },
+                                        { required: true,whitespace:true, message: '账号必须输入' },
+                                        { min: 4, message: '账号至少4位' },
+                                        { max: 12, message: '账号最多12位' },
+                                        { pattern: /^[a-zA-Z0-9_]+$/, message: '账号必须是英文、数字或下划线组成' },
                                     ],
-                                    initialValue:username===null?'admin':username
+                                    initialValue:account===null?'admin':account
 
                                 })(
                                     <Input
                                         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                        placeholder="用户名"
+                                        placeholder="账号"
                                     />
                                 )
                             }

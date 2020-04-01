@@ -16,7 +16,7 @@ const BASE=''
 /*export function reqLogin(username ,password) {
     return ajax('/login',{username ,password},'POST')
 }*/
-export const reqLoginUser=(username ,password,remember)=>ajax(BASE+'/loginu',{username ,password,remember},'POST')
+export const reqLoginUser=(account ,password,remember)=>ajax(BASE+'/loginu',{account ,password,remember},'POST')
 
 //获取checked为1的用户
 export const reqUser=()=>ajax(BASE+'/checkedu')
@@ -64,8 +64,10 @@ export const reqUpdateUsers=(user)=>ajax(BASE+'/user/update',user,'POST')
 //删除用户
 export const reqDeleteUsers=(userId)=>ajax(BASE+'/user/delete',{userId},'POST')
 
-//显示用户列表
-export const reqEnterprises=()=>ajax(BASE+'/enterprise/list')
+//获取指定企业信息
+export const reqEnterprise=(userId)=>ajax(BASE+'/business/enterprise/detail',{userId},"POST")
+//获取指定企业信息
+export const reqUpdateEnterprise=(user)=>ajax(BASE+'/business/enterprise/update',user,"POST")
 //添加用户
 export const reqAddEnterprises=(enterprise)=>ajax(BASE+'/enterprise/add',enterprise,'POST')
 //更新用户
@@ -96,14 +98,31 @@ export const reqDeleteResume=(resumeid)=>ajax(BASE+'/home/resume/delete',{resume
 export const reqUpdateResume=(resume,resumeid)=>ajax(BASE+'/home/resume/update',{resume,resumeid},'POST')
 
 //获取收藏信息
-export const reqFavorite=(username)=>ajax(BASE+'/home/favorite',{username},'POST')
+export const reqFavorite=(userId)=>ajax(BASE+'/home/favorite',{userId},'POST')
 //获取被收藏信息
 export const reqBeFavorite=()=>ajax(BASE+'/home/befavorite')
 //删除简历信息
-export const reqDeleteFavorite =(resumeid)=>ajax(BASE+'/home/favorite/delete',{resumeid},'POST')
-
-//获取收藏信息
+export const reqDeleteFavorite =(favoriteid)=>ajax(BASE+'/home/favorite/delete',{favoriteid},'POST')
+//获取投递信息
 export const reqDeliver=(username)=>ajax(BASE+'/home/deliver',{username},'POST')
-
 //获取收藏信息
 export const reqOccupation=()=>ajax(BASE+'/recruit/list',{},'POST')
+
+//添加招聘信息
+export const reqAddEmpoly=(recruit,enter,userId)=>ajax(BASE+'/business/employ/add',{recruit,enter,userId},'POST')
+//获取招聘信息
+export const reqRecruit=(userId)=>ajax(BASE+'/business/employ/list',{userId},'POST')
+//更新招聘信息
+export const reqUpdateEmpoly =(employid,value)=>ajax(BASE+'/business/employ/update',{employid,value},'POST')
+//删除招聘信息
+export const reqDeleteEmploy =(employid)=>ajax(BASE+'/business/employ/delete',{employid},'POST')
+
+//获取全部招聘列表
+export const reqRecruits=()=>ajax(BASE+'/recruit/recruit/list')
+//获取招聘信息是否被收藏
+export const reqWhetherFavorite=(employid,userId,enterId)=>ajax(BASE+'/recruit/recruit/detail/favor',{employid,userId,enterId},'POST')
+//添加收藏信息
+export const reqSetFavorite=(employid,emname,userId,icon)=>ajax(BASE+'/recruit/recruit/detail/setfavor',{employid,emname,userId,icon},'POST')
+//获取招聘信息是否被收藏
+export const reqEnterpriseDetail=(enterId)=>ajax(BASE+'/recruit/recruit/enterdetail',{enterId},'POST')
+

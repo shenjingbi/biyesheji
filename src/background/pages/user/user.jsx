@@ -57,7 +57,6 @@ export  default class User extends Component{
             }
             //清空输入框
             this.form.resetFields()
-
             //如果是更新，需要给user指定id属性
             //2.提交添加请求
             if(this.user){

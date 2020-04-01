@@ -3,11 +3,10 @@ import {Switch,Route} from "react-router-dom";
 import {Card, Button, Table, Modal, message, Avatar, Upload} from 'antd'
 
 
-import {reqAddManagers, reqAddUsers, reqDeleteUsers, reqUpdatePhotos, reqUpdateUsers, reqUsers} from "../../../api";
+import { reqUpdatePhotos} from "../../../../api";
 import UserAddUpdate from './add-update'
 import {connect} from "react-redux";
-import {login} from "../../../redux/actions";
-import LinkButton from "../../../component/link-button/button";
+import {login} from "../../../../redux/actions";
 /*
 个人信息
 * */

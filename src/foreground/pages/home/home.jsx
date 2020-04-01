@@ -40,7 +40,6 @@ class Home extends Component{
         const title=this.props.headTitle
         //console.log(moment(users).format('d'))
         return (
-
                     <Layout className="home" >
                         <Sider className="left-nav" >
                             <LeftNav/>
@@ -61,8 +60,6 @@ class Home extends Component{
                             </Switch>
                         </Content>
                     </Layout>
-
-
         )
     }
 }

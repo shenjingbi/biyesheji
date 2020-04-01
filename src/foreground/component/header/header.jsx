@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {withRouter} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import './header.less'
@@ -103,6 +103,6 @@ import LinkButton from "../link-button/button";
 
 export  default connect(
     state=>({headTitle2:state.headTitle2,user:state.user}),
-    {setHeadTitle2}
+    {setHeadTitle2,logout}
 )(withRouter(Header1))
 //withRouter(Header)将该组件变成路由组件，connect将该组件变称容器组件

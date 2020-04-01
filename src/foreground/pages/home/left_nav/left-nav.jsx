@@ -14,26 +14,6 @@ const SubMenu=Menu.SubMenu
 * */
 class LeftNav extends Component{
 
-    //判断当前登录用户对item是否有权限
-    hasAuth = (item) =>{
-        const {key,isPublic}=item  //menuList列表中的key
-        const menus1=this.props.user.menus||{}
-        const menus=menus1.toString().split(",")
-        const username=this.props.user.username
-        //menus.indexOf(key)找key在数组中的下标，找不到就是-1
-        /*1.如果当前用户是admin
-        2.当前用户有此item的权限：key有没有在menus中
-        3.如果当前item是公开的*/
-        if(username==='admin'||isPublic||menus.indexOf(key)!==-1){
-            return true
-        }else if(item.children){//4.当前用户有此item的某个子item的权限
-            return !!item.children.find(child=>{ return menus.indexOf(child.key)!==-1}) //!!：强制转换成bool值
-        }
-        return false
-
-    }
-
-
     /*根据menu的数据数组生成对应的标签数组
     使用reduce()+递归调用,pre是上次调用的数组*/
     getMenuNodes=(menuList)=>{
@@ -42,7 +22,6 @@ class LeftNav extends Component{
         return menuList.reduce((pre,item)=>{
            /* 向pre中添加 1.Menu.Item（无子路由）
                          2.Submenu(有子路由)*/
-           if(this.hasAuth(item)){
                if(!item.children){
                    //判断item是否是当前需对应的item
                    if(item.key===path||path.indexOf(item.key)===0){
@@ -80,7 +59,7 @@ class LeftNav extends Component{
                        </SubMenu>
                    ))
                }
-           }
+
             return pre
         },[])
     }

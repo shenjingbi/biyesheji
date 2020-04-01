@@ -4,14 +4,10 @@ import {Layout} from "antd";
 import {connect} from 'react-redux'
 
 import Header from "../../component/header/header";
-
 import Home from "../home/home";
-import Recruit from "../recruit/recruit";
-import Business from "../business/business";
-
+import Admin2 from "../recruit/admin/admin";
+import Admin1 from "../business/businesspages/admin/admin";
 import NotFound from "../not-found/not-found";
-
-
 
 const {Footer,Sider,Content}=Layout
 /*
@@ -35,14 +31,14 @@ class Admin extends Component{
                         <Switch>
                             <Redirect exact={true} from='/' to='/recruit'/>
                             <Route path='/home' component={Home}></Route>
-                            <Route path='/recruit' component={Recruit}></Route>
-                            <Route path='/business' component={Business}></Route>
+                            <Route path='/recruit' component={Admin2}></Route>
+                            <Route path='/business' component={Admin1}></Route>
                             <Route component={NotFound}/>
                         </Switch>
                     </Content>
 
                 </Layout>
-                <Footer style={{textAlign:'center',color:"green",marginTop:20}}>推荐使用谷歌浏览器，可以获得更加的页面操作体检</Footer>
+                <Footer style={{textAlign:'center',color:"green"}}>推荐使用谷歌浏览器，可以获得更加的页面操作体检</Footer>
             </Layout>
 
         )

@@ -111,6 +111,25 @@ class Register extends Component{
                             }
 
                         </Item>
+
+                        <Form.Item>
+                            {
+                                getFieldDecorator('account',{
+                                    rules: [
+                                        { required: true,whitespace:true, message: '账号必须输入' },
+                                        { min: 4, message: '账号至少8位' },
+                                        { max: 12, message: '账号最多12位' },
+                                        { pattern: /^[a-zA-Z0-9_]+$/, message: '账号必须是英文、数字或下划线组成' },
+                                    ],
+                                })(
+                                    <Input
+                                        prefix={<Icon type="number" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                        placeholder="账号"
+                                    />
+                                )
+                            }
+                        </Form.Item>
+
                         <Form.Item>
                             {
                                 getFieldDecorator('password1',{
