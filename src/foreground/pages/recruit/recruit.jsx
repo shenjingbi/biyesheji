@@ -5,7 +5,7 @@ import {Breadcrumb, Button, Input, Menu, Select} from "antd";
 
 
 import {connect} from "react-redux";
-import {reqOccupation, reqRecruits, reqResume, reqResumes} from "../../api";
+import {reqAddScan, reqOccupation, reqRecruits, reqResume, reqResumes} from "../../api";
 import LinkButton from "../../component/link-button/button";
 import {HomeOutlined} from "@ant-design/icons";
 import placeList from '../../config/place'
@@ -25,9 +25,8 @@ class Recruit extends Component{
         occupation:[], //职业列表
         welfare:['五险一金','包住','包吃','年底双薪','周末双休','交通补助','加班补助','饭补','话补','房补'], //福利列表
         salarys:['面议','1000元以下','1000-2000元','2000-3000元','3000-5000元','5000-8000元','8000-12000元','12000-20000元','20000-25000元','25000元以上'], //工资选项
-        worktimes:['无经验','应届生','一年以下','1-3年','3-5年','5-10年','10年以上'], //工作年限
-        educations:['高中以下','高中','中专/技校','大专','本科','硕士','博士','MBA/EMBA',] ,//学历分类
-        create_time:['一天以内','三天以内','七天以内','十五天以内','一个月以内']  //招聘信息发布时间要求
+        educations:['不限','本科','硕士','博士','MBA/EMBA',] ,//学历分类
+        create_time:['不限','一天以内','三天以内','七天以内','一个月以内']  //招聘信息发布时间要求
     }
 
     //级联显示地点
@@ -37,6 +36,14 @@ class Recruit extends Component{
             secondplace: concrete[value][0],
         });
     };
+
+    //查看招聘信息并增加浏览次数
+    addScan=async (recruit)=>{
+        const employid=recruit.employid
+        await reqAddScan(employid)
+        this.props.history.push('/recruit/detail',{recruit})
+
+    }
 
     onSecondCityChange = value => {
         this.setState({
@@ -104,9 +111,9 @@ class Recruit extends Component{
     }
 
     render() {
-        const {occupation,places,welfare,educations,salarys,worktimes,create_time,recruits}=this.state
+        const {occupation,places,welfare,educations,salarys,create_time,recruits}=this.state
         const title=this.props.headTitle
-        console.log(recruits)
+        console.log(111,recruits)
         //console.log(moment(users).format('d'))
         return (
             <div>
@@ -184,13 +191,6 @@ class Recruit extends Component{
                                 }
                             </Select>
                         </Item>
-                        <Item href="" >
-                            <Select allowClear style={{width:140}} placeholder="工作经验" >
-                                {
-                                    worktimes.map(worktime=><Option  key={worktime} onClick={(worktime)=>{this.getEducation(worktime)}}>{worktime}</Option>)
-                                }
-                            </Select>
-                        </Item>
                     </Breadcrumb>
                     <br/>
                 </div>
@@ -209,7 +209,7 @@ class Recruit extends Component{
                                 <div className='detail'>
                                     <div className='detail-left'>
                                         <div className='detail-left-top'>
-                                            <LinkButton style={{color:'black'}} onClick={()=>{this.props.history.push('/recruit/detail', {recruit})}}><p><span>{recruit.emname}</span></p></LinkButton>
+                                            <LinkButton style={{color:'black'}} onClick={()=>{this.addScan(recruit)}}><p><span>{recruit.emname}</span></p></LinkButton>
                                         </div>
                                         <div className='detail-left-middle'>
                                             <p><span>{recruit.salarymin}-{recruit.salarymax}</span><span style={{fontSize:12}}>元/月</span></p>
@@ -225,13 +225,13 @@ class Recruit extends Component{
                                         </div>
 
                                         <div className='detail-middle-bottom'>
-                                            <p><span>{recruit.category}|{recruit.education}|{recruit.worktime}</span></p>
+                                            <p><span>{recruit.category}|{recruit.education}</span></p>
                                         </div>
 
                                     </div>
                                     <div className='detail-right'>
                                         <div className='detail-right-left'>
-                                            <Button type='danger' onClick={()=>{this.props.history.push('/recruit/detail', {recruit})}}><span>申请</span></Button>
+                                            <Button type='danger' onClick={()=>{this.addScan(recruit)}}><span>申请</span></Button>
                                         </div>
                                         <div className='detail-right-right'>
                                             <p><span>{formateDate2(recruit.create_time)}</span></p>

@@ -104,7 +104,11 @@ export const reqBeFavorite=()=>ajax(BASE+'/home/befavorite')
 //删除简历信息
 export const reqDeleteFavorite =(favoriteid)=>ajax(BASE+'/home/favorite/delete',{favoriteid},'POST')
 //获取投递信息
-export const reqDeliver=(username)=>ajax(BASE+'/home/deliver',{username},'POST')
+export const reqDeliver=(userId)=>ajax(BASE+'/home/deliver',{userId},'POST')
+//查看指定投递信息的详情
+export const getRecruitDetail=(employid,userId)=>ajax(BASE+'/home/deliver/emdetail',{employid,userId},'POST')
+//查看指定简历信息的详情
+export const getResumeDetail=(employid,userId)=>ajax(BASE+'/home/deliver/redetail',{employid,userId},'POST')
 //获取收藏信息
 export const reqOccupation=()=>ajax(BASE+'/recruit/list',{},'POST')
 
@@ -119,10 +123,15 @@ export const reqDeleteEmploy =(employid)=>ajax(BASE+'/business/employ/delete',{e
 
 //获取全部招聘列表
 export const reqRecruits=()=>ajax(BASE+'/recruit/recruit/list')
+//查看招聘信息并增加浏览次数
+export const reqAddScan=(employid)=>ajax(BASE+'/recruit/recruit/addscan',{employid},'POST')
 //获取招聘信息是否被收藏
 export const reqWhetherFavorite=(employid,userId,enterId)=>ajax(BASE+'/recruit/recruit/detail/favor',{employid,userId,enterId},'POST')
 //添加收藏信息
 export const reqSetFavorite=(employid,emname,userId,icon)=>ajax(BASE+'/recruit/recruit/detail/setfavor',{employid,emname,userId,icon},'POST')
 //获取招聘信息是否被收藏
 export const reqEnterpriseDetail=(enterId)=>ajax(BASE+'/recruit/recruit/enterdetail',{enterId},'POST')
-
+//添加收藏信息
+export const reqApplyPosition=(employid,emname,userId)=>ajax(BASE+'/recruit/recruit/detail/apply',{employid,emname,userId},'POST')
+//获取是否已经投递该职位
+export const reqGetPosition=(employid,userId)=>ajax(BASE+'/recruit/recruit/posidetail',{employid,userId},'POST')

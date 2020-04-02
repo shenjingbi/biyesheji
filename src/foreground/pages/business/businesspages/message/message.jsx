@@ -25,6 +25,11 @@ import {formateDate} from "../../../../utils/dateUtils";
                  key: 'resumename',
              },
              {
+                 title: '投递的招聘信息',
+                 dataIndex: 'emname',
+                 key: 'emname',
+             },
+             {
                  title: '投递时间',
                  dataIndex: 'create_time',
                  key: 'create_time',
@@ -88,7 +93,7 @@ import {formateDate} from "../../../../utils/dateUtils";
 
      };
 
-     //异步获取简历信息
+     //异步获取投递信息
      getFavorite=async ()=>{
          const username=this.props.user.username
          const result=await reqFavorite(username)

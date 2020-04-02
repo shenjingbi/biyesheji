@@ -23,11 +23,6 @@ class ShowResume extends Component{
                 key: 'workclassify',
             },
             {
-                title: '工作年限',
-                dataIndex: 'worktime',
-                key: 'worktime',
-            },
-            {
                 title: '下载',
                 dataIndex: 'loadtime',
                 key: 'loadtime',

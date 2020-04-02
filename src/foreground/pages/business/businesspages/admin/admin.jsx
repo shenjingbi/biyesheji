@@ -7,7 +7,7 @@ import LeftNav from "../left_nav/left-nav";
 import Enterprise from "../enterprise/enterprise"
 import Business from "../employ/business"
 import Employ from "../employ/employ"
-import Message from "../employ/message"
+import Message from "../message/message"
 import UpdateEmploy from "../employ/updateemploy"
 import NotFound from "../not-found/not-found"
 import User from "../user/user"

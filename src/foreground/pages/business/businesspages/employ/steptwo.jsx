@@ -94,6 +94,11 @@ class StepTwo extends Component{
                         {
                             getFieldDecorator('enterdetail',{
                                 initialValue:recruit.enterdetail===undefined?recruit.enterdetail:"老板使用58招人神器【招才猫直聘APP】发布该职位，公司招人的诚意大到无需描述，赶紧来应聘吧。",
+                                rules: [
+                                    { required: true,message: '请填写公司简介',},
+                                    { min: 30, message: '至少填写30字的介绍' },
+
+                                ],
                             })(
                                 <Input.TextArea placeholder="请简单介绍你的公司信息，让求职者了解您的公司，提高效率"/>
                             )

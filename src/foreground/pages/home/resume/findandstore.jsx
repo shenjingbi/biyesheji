@@ -30,7 +30,7 @@ const Item=Form.Item
                    className='resume'
                    bordered={false}
              >
-                 <p><span>基本情况：</span> {resume1.sex} | {resume1.birth}岁 | {resume1.education} | {resume1.worktime }</p>
+                 <p><span>基本情况：</span> {resume1.sex} | {resume1.birth}岁 | {resume1.education} </p>
                  <p><span>求职意向：</span> 求职{resume1.workclassify} | 想在{resume1.place}工作 | 期望薪资{resume1.salary}</p>
                  <p><span>联系方式：</span> {resume1.telephone} </p>
                  <p><span>自我介绍：</span>{resume1.introduce}</p>

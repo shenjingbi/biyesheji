@@ -24,9 +24,7 @@ class StepOne extends Component{
     state={
         welfare:['五险一金','包住','包吃','年底双薪','周末双休','交通补助','加班补助','饭补','话补','房补'], //福利列表
         salarys:['面议','1000元以下','1000-2000元','2000-3000元','3000-5000元','5000-8000元','8000-12000元','12000-20000元','20000-25000元','25000元以上'], //工资选项
-        worktimes:['无经验','应届生','一年以下','1-3年','3-5年','5-10年','10年以上'], //工作年限
-        educations:['高中以下','高中','中专/技校','大专','本科','硕士','博士','MBA/EMBA',] ,//学历分类
-        create_time:['一天以内','三天以内','七天以内','十五天以内','一个月以内'],  //招聘信息发布时间要求
+        educations:['不限','本科','硕士','博士','MBA/EMBA',] ,//学历分类
         place:[], //工作地址
     }
     static propTypes={
@@ -84,7 +82,7 @@ class StepOne extends Component{
     render() {
         //得到form对象
         const {getFieldDecorator}=this.props.form
-        const {occupation,welfare,educations,salarys,worktimes,create_time,place}=this.state
+        const {occupation,welfare,educations,salarys,create_time,place}=this.state
         const {recruit,isUpdate}=this.props
         const {districtData,concrete}=placeList
         const workplace=recruit.workplace===undefined?{}:recruit.workplace.split(",")
@@ -193,24 +191,6 @@ class StepOne extends Component{
                             }
                         </Item>
 
-                    </Item>
-
-                    <Item label='工作年限：' {...formItemLayout}>
-                        {
-                            getFieldDecorator('worktime',{
-                                initialValue:recruit.worktime,
-                                rules: [
-                                    { required: true,message: '请填写你的工作年限',},
-                                ],
-                            })(
-                                <Select allowClear style={{width:200}} placeholder="工作年限" >
-                                    {
-                                        worktimes.map(worktime=><Option  key={worktime}>  {worktime}  </Option>)
-                                    }
-                                </Select>
-
-                            )
-                        }
                     </Item>
 
                     <Item label='学历：' {...formItemLayout}>

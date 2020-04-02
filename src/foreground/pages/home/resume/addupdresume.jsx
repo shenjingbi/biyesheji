@@ -15,7 +15,6 @@ const {SubMenu}=Menu
 class Addupdresume extends Component{
     state={
         salarys:['面议','1000元以下','1000-2000元','2000-3000元','3000-5000元','5000-8000元','8000-12000元','12000-20000元','20000-25000元','25000元以上'], //工资选项
-        worktimes:['无经验','应届生','一年以下','1-3年','3-5年','5-10年','10年以上'], //工作年限
         educations:['高中以下','高中','中专/技校','大专','本科','硕士','博士','MBA/EMBA',] ,//学历分类
     }
     submit=()=>{
@@ -146,25 +145,6 @@ class Addupdresume extends Component{
                                 ]
                             })(
                                 <Input/>
-                            )
-                        }
-                    </Item>
-
-                    <Item label='工作经历：' {...formItemLayout}>
-                        {
-                            getFieldDecorator('worktime',{
-                                initialValue:resume1.worktime,
-                                rules: [
-                                    { required: true,message: '请填写你的工作经历',},
-                                ],
-                            })(
-                                <Select
-                                    placeholder="Select a option and change input text above"  allowClear
-                                >
-                                    {
-                                        worktimes.map(worktime=><Option key={worktime}>{worktime}</Option>)
-                                    }
-                                </Select>
                             )
                         }
                     </Item>
